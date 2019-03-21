@@ -80,8 +80,8 @@ char *gtc_heap_view_closure_type_names[] = {
  [ARR_WORDS]             = "ARR_WORDS",
  [MUT_ARR_PTRS_CLEAN]    = "MUT_ARR_PTRS_CLEAN",
  [MUT_ARR_PTRS_DIRTY]    = "MUT_ARR_PTRS_DIRTY",
- [MUT_ARR_PTRS_FROZEN0]  = "MUT_ARR_PTRS_FROZEN0",
- [MUT_ARR_PTRS_FROZEN]   = "MUT_ARR_PTRS_FROZEN",
+ [MUT_ARR_PTRS_FROZEN_DIRTY]  = "MUT_ARR_PTRS_FROZEN_DIRTY",
+ [MUT_ARR_PTRS_FROZEN_CLEAN]   = "MUT_ARR_PTRS_FROZEN_CLEAN",
  [MUT_VAR_CLEAN]         = "MUT_VAR_CLEAN",
  [MUT_VAR_DIRTY]         = "MUT_VAR_DIRTY",
  [WEAK]                  = "WEAK",
@@ -96,8 +96,8 @@ char *gtc_heap_view_closure_type_names[] = {
  [WHITEHOLE]             = "WHITEHOLE",
  [SMALL_MUT_ARR_PTRS_CLEAN]   = "SMALL_MUT_ARR_PTRS_CLEAN",
  [SMALL_MUT_ARR_PTRS_DIRTY]   = "SMALL_MUT_ARR_PTRS_DIRTY",
- [SMALL_MUT_ARR_PTRS_FROZEN0] = "SMALL_MUT_ARR_PTRS_FROZEN0",
- [SMALL_MUT_ARR_PTRS_FROZEN]  = "SMALL_MUT_ARR_PTRS_FROZEN",
+ [SMALL_MUT_ARR_PTRS_FROZEN_CLEAN] = "SMALL_MUT_ARR_PTRS_FROZEN_CLEAN",
+ [SMALL_MUT_ARR_PTRS_FROZEN_DIRTY] = "SMALL_MUT_ARR_PTRS_FROZEN_DIRTY",
 #if defined(GHC_8_2)
  [COMPACT_NFDATA]  = "COMPACT_NFDATA",
 #endif
@@ -253,8 +253,8 @@ StgMutArrPtrs *gtc_heap_view_closurePtrs(Capability *cap, StgClosure *closure) {
 
         case MUT_ARR_PTRS_CLEAN:
         case MUT_ARR_PTRS_DIRTY:
-        case MUT_ARR_PTRS_FROZEN:
-        case MUT_ARR_PTRS_FROZEN0:
+        case MUT_ARR_PTRS_FROZEN_CLEAN:
+        case MUT_ARR_PTRS_FROZEN_DIRTY:
             for (i = 0; i < ((StgMutArrPtrs *)closure)->ptrs; ++i) {
                 ptrs[nptrs++] = ((StgMutArrPtrs *)closure)->payload[i];
             }
@@ -278,7 +278,7 @@ StgMutArrPtrs *gtc_heap_view_closurePtrs(Capability *cap, StgClosure *closure) {
     StgMutArrPtrs *arr = 
         (StgMutArrPtrs *)allocate(cap, sizeofW(StgMutArrPtrs) + size);
     TICK_ALLOC_PRIM(sizeofW(StgMutArrPtrs), nptrs, 0);
-    SET_HDR(arr, &stg_MUT_ARR_PTRS_FROZEN_info, CCCS);
+    SET_HDR(arr, &stg_MUT_ARR_PTRS_FROZEN_CLEAN_info, CCCS);
     arr->ptrs = nptrs;
     arr->size = size;
 
