@@ -80,7 +80,7 @@ Library
     bytestring >= 0.10,
     binary
 
-  build-depends: ghc >= 8.2 && <= 8.7
+  build-depends: ghc >= 8.6 && <= 8.7
   cc-options: -DGHC_8_2
   cpp-options: -DGHC_8_2
 
